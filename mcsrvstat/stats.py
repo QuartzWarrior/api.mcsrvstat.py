@@ -95,7 +95,7 @@ class Base:
         else:
             self.default_endpoint += f'bedrock/2/{self.server_url}'
             
-        return requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return await requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
     def lookup_server_icon(self):
         """
@@ -103,7 +103,7 @@ class Base:
         """
 
         self.icon_endpoint += self.server_url
-        return requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return await requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
 
 class Stats:
