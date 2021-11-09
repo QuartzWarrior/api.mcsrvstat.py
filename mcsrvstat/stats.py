@@ -74,7 +74,7 @@ class Base:
     The root class of the library for directly interacting with the API.
     """
 
-    def __init__(self, server_platform: str, server_url: str, ignore_status_code: bool):
+    async def __init__(self, server_platform: str, server_url: str, ignore_status_code: bool):
         self.server_platform = server_platform.lower()
         self.server_url = server_url
         self.available_platforms = ['java', 'bedrock']
@@ -97,7 +97,7 @@ class Base:
             
         return await requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
-    def lookup_server_icon(self):
+    async def lookup_server_icon(self):
         """
         Returns an image which refers to the server's icon. A 64x64 PNG image will always be returned.
         """
