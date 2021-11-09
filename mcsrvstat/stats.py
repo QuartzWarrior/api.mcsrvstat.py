@@ -74,7 +74,7 @@ class Base:
     The root class of the library for directly interacting with the API.
     """
 
-    async def __init__(self, server_platform: str, server_url: str, ignore_status_code: bool):
+    def __init__(self, server_platform: str, server_url: str, ignore_status_code: bool):
         self.server_platform = server_platform.lower()
         self.server_url = server_url
         self.available_platforms = ['java', 'bedrock']
