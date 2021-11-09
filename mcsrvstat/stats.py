@@ -82,7 +82,7 @@ class Base:
         self.icon_endpoint = 'https://api.mcsrvstat.us/icon/'
         self.ignore_status_code = ignore_status_code
 
-    def lookup_server(self):
+    async def lookup_server(self):
         """
         Returns an application/json value for the given server once invoked.
         """
