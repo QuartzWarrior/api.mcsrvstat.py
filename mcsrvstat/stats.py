@@ -1,19 +1,20 @@
-import requests
+import aiohttp
 
 
-def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
+async def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
     try:
-        request = requests.get(endpoint)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(endpoint) as request:
 
-        if not ignore_status_code:
-            if request.status_code != 200:
-                raise LookupError('The API is down, for now.')
-            else:
-                return request.json() if json else request
-        else:
-            return request.json() if json else request
+                if not ignore_status_code:
+                    if request.status != 200:
+                        raise LookupError('The API is down, for now.')
+                    else:
+                        return request.json() if json else request
+                else:
+                    return request.json() if json else request
 
-    except requests.exceptions.ConnectionError:
+    except aiohttp.ClientConnectionError:
         raise LookupError('You must have a stable internet connection.')
 
 
