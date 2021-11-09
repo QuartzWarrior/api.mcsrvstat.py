@@ -1,7 +1,7 @@
 import aiohttp
 
 
-def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
+async def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(endpoint) as request:
