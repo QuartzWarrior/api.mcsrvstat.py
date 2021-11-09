@@ -31,7 +31,7 @@ class Player:
         self.name = name
         self.uuid = uuid
 
-    def __str__(self):
+    async def __str__(self):
         return f'Name: {self.name}; UUID: {self.uuid}'
 
 
@@ -48,7 +48,7 @@ class ServerSoftware:
         self.version = version
         self.software = software
 
-    def __str__(self):
+    async def __str__(self):
         return f'Version: {self.version}; Software: {self.software}'
 
 
@@ -65,7 +65,7 @@ class ServerPlayerCount:
         self.online = online
         self.max = max
 
-    def __str__(self):
+    async def __str__(self):
         return f'Online: {self.online}; Max: {self.max}'
 
 
@@ -119,7 +119,7 @@ class Stats:
     def __init__(self, server_platform: str, server_url: str, ignore_status_code: bool):
         self.base = Base(server_platform=server_platform, server_url=server_url, ignore_status_code=ignore_status_code)
 
-    def check_if_online(self) -> bool:
+    async def check_if_online(self) -> bool:
         """
         Gives out a boolean value depending on whether the server is online or not.
         """
@@ -127,14 +127,14 @@ class Stats:
         server = self.base.lookup_server()
         return server['online']
 
-    def get_server_icon(self):
+    async def get_server_icon(self):
         """
         Gives out the default icon of the server. A 64x64 PNG image will always be returned.
         """
         
         return self.base.lookup_server_icon()
 
-    def get_server_motd(self, motd_type: str) -> str:
+    async def get_server_motd(self, motd_type: str) -> str:
         """
         Gives out a list containing the server's MOTD.
 
@@ -150,7 +150,7 @@ class Stats:
         except KeyError:
             return None
 
-    def get_server_software(self) -> ServerSoftware:
+    async def get_server_software(self) -> ServerSoftware:
         """
         Gives out a `ServerSoftware` object containing the version and software information of the given server. Returns `None` if not applicable.
         """
@@ -158,11 +158,11 @@ class Stats:
         server = self.base.lookup_server()
 
         try:
-            return ServerSoftware(version=server['version'], software=server['software'])
+            return await ServerSoftware(version=server['version'], software=server['software'])
         except KeyError:
             return None
 
-    def get_server_debug_value(self, debug_value: str) -> bool:
+    async def get_server_debug_value(self, debug_value: str) -> bool:
         """
         Gives out a specific debug value of the server. Returns `None` if not applicable.
         """
@@ -175,7 +175,7 @@ class Stats:
         except KeyError:
             raise LookupError('Invalid debug value passed.')
 
-    def get_player_by_name(self, player_name: str) -> Player:
+    async def get_player_by_name(self, player_name: str) -> Player:
         """
         Gives out a `Player` object if a player is found active / online by the given name. Returns `None` if not applicable.
         """
@@ -184,12 +184,12 @@ class Stats:
 
         try:
             if player_name in server['players']['uuid']:
-                return Player(name=player_name, uuid=server['players']['uuid'][player_name])
+                return await Player(name=player_name, uuid=server['players']['uuid'][player_name])
 
         except KeyError:
             raise LookupError('Player offline / non-existent.')
 
-    def get_player_amount(self) -> ServerPlayerCount:
+    async def get_player_amount(self) -> ServerPlayerCount:
         """
         Gives out a `ServerPlayerCount` object containing both the online and the max player count. Returns `None` if not applicable.
         """
@@ -197,11 +197,11 @@ class Stats:
         server = self.base.lookup_server()
         
         try:
-            return ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
+            return await ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
         except KeyError:
             return None
 
-    def get_players(self) -> list:
+    async def get_players(self) -> list:
         """
         Gives out a list containing `Player` objects, each indicating an online player. Returns `None` if not applicable.
         """
