@@ -197,7 +197,7 @@ class Stats:
         server = await self.base.lookup_server()
         
         try:
-            return await ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
+            return ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
         except KeyError:
             return None
 
