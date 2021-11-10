@@ -7,7 +7,7 @@ async def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
             async with session.get(endpoint) as request:
 
                 if not ignore_status_code:
-                    if await request.status != 200:
+                    if request.status != 200:
                         raise LookupError('The API is down, for now.')
                     else:
                         return await request.json() if json else request
@@ -95,7 +95,7 @@ class Base:
         else:
             self.default_endpoint += f'bedrock/2/{self.server_url}'
             
-        return await requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
     async def lookup_server_icon(self):
         """
@@ -103,7 +103,7 @@ class Base:
         """
 
         self.icon_endpoint += self.server_url
-        return await requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
 
 class Stats:
@@ -158,7 +158,7 @@ class Stats:
         server = await self.base.lookup_server()
 
         try:
-            return await ServerSoftware(version=server['version'], software=server['software'])
+            return ServerSoftware(version=server['version'], software=server['software'])
         except KeyError:
             return None
 
@@ -184,7 +184,7 @@ class Stats:
 
         try:
             if player_name in server['players']['uuid']:
-                return await Player(name=player_name, uuid=server['players']['uuid'][player_name])
+                return Player(name=player_name, uuid=server['players']['uuid'][player_name])
 
         except KeyError:
             raise LookupError('Player offline / non-existent.')
@@ -197,7 +197,7 @@ class Stats:
         server = await self.base.lookup_server()
         
         try:
-            return await ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
+            return ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
         except KeyError:
             return None
 
