@@ -7,12 +7,12 @@ async def requestGet(endpoint: str, json: bool, ignore_status_code: bool):
             async with session.get(endpoint) as request:
 
                 if not ignore_status_code:
-                    if request.status != 200:
+                    if await request.status != 200:
                         raise LookupError('The API is down, for now.')
                     else:
-                        return request.json() if json else request
+                        return await request.json() if json else request
                 else:
-                    return request.json() if json else request
+                    return await request.json() if json else request
 
     except aiohttp.ClientConnectionError:
         raise LookupError('You must have a stable internet connection.')
