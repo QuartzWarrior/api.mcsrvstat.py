@@ -124,7 +124,7 @@ class Stats:
         Gives out a boolean value depending on whether the server is online or not.
         """
         
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
         return server['online']
 
     async def get_server_icon(self):
@@ -132,7 +132,7 @@ class Stats:
         Gives out the default icon of the server. A 64x64 PNG image will always be returned.
         """
         
-        return self.base.lookup_server_icon()
+        return await self.base.lookup_server_icon()
 
     async def get_server_motd(self, motd_type: str) -> str:
         """
@@ -142,7 +142,7 @@ class Stats:
             `type` - Specifies the type of the MOTD (has to be `raw`, `clean` or `html`).
         """
         
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
         motd_type = motd_type.lower()
 
         try:
@@ -155,7 +155,7 @@ class Stats:
         Gives out a `ServerSoftware` object containing the version and software information of the given server. Returns `None` if not applicable.
         """
 
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
 
         try:
             return await ServerSoftware(version=server['version'], software=server['software'])
@@ -167,7 +167,7 @@ class Stats:
         Gives out a specific debug value of the server. Returns `None` if not applicable.
         """
 
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
         debug_value = debug_value.lower()
         
         try:
@@ -180,7 +180,7 @@ class Stats:
         Gives out a `Player` object if a player is found active / online by the given name. Returns `None` if not applicable.
         """
 
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
 
         try:
             if player_name in server['players']['uuid']:
@@ -194,7 +194,7 @@ class Stats:
         Gives out a `ServerPlayerCount` object containing both the online and the max player count. Returns `None` if not applicable.
         """
 
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
         
         try:
             return await ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
@@ -206,7 +206,7 @@ class Stats:
         Gives out a list containing `Player` objects, each indicating an online player. Returns `None` if not applicable.
         """
 
-        server = self.base.lookup_server()
+        server = await self.base.lookup_server()
         players = list()
 
         try:
