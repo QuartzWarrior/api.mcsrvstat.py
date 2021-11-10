@@ -95,7 +95,7 @@ class Base:
         else:
             self.default_endpoint += f'bedrock/2/{self.server_url}'
             
-        return requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return await requestGet(endpoint=self.default_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
     async def lookup_server_icon(self):
         """
@@ -103,7 +103,7 @@ class Base:
         """
 
         self.icon_endpoint += self.server_url
-        return requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
+        return await requestGet(endpoint=self.icon_endpoint, json=True, ignore_status_code=self.ignore_status_code)
 
 
 class Stats:
@@ -158,7 +158,7 @@ class Stats:
         server = await self.base.lookup_server()
 
         try:
-            return ServerSoftware(version=server['version'], software=server['software'])
+            return await ServerSoftware(version=server['version'], software=server['software'])
         except KeyError:
             return None
 
@@ -184,7 +184,7 @@ class Stats:
 
         try:
             if player_name in server['players']['uuid']:
-                return Player(name=player_name, uuid=server['players']['uuid'][player_name])
+                return await Player(name=player_name, uuid=server['players']['uuid'][player_name])
 
         except KeyError:
             raise LookupError('Player offline / non-existent.')
@@ -197,7 +197,7 @@ class Stats:
         server = await self.base.lookup_server()
         
         try:
-            return ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
+            return await ServerPlayerCount(online=server['players']['online'], max=server['players']['max'])
         except KeyError:
             return None
 
