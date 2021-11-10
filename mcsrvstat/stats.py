@@ -158,7 +158,7 @@ class Stats:
         server = await self.base.lookup_server()
 
         try:
-            return await ServerSoftware(version=server['version'], software=server['software'])
+            return ServerSoftware(version=server['version'], software=server['software'])
         except KeyError:
             return None
 
@@ -184,7 +184,7 @@ class Stats:
 
         try:
             if player_name in server['players']['uuid']:
-                return await Player(name=player_name, uuid=server['players']['uuid'][player_name])
+                return Player(name=player_name, uuid=server['players']['uuid'][player_name])
 
         except KeyError:
             raise LookupError('Player offline / non-existent.')
